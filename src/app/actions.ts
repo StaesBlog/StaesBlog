@@ -95,6 +95,7 @@ export async function login(prevState: any, formData: FormData) {
     path: '/',
   });
   
+  revalidatePath('/');
   redirect('/');
 }
 
@@ -105,10 +106,12 @@ export async function logout() {
 
 
 export async function getPosts(): Promise<Post[]> {
+  noStore();
   return Array.from(posts.values()).sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 }
 
 export async function getPost(slug: string): Promise<Post | undefined> {
+  noStore();
   return posts.get(slug);
 }
 

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PlusCircle } from 'lucide-react';
 import { Post } from '@/lib/types';
+import { unstable_noStore as noStore } from 'next/cache';
 
 function PostCard({ post }: { post: Post }) {
   return (
@@ -28,6 +29,7 @@ function PostCard({ post }: { post: Post }) {
 }
 
 export default async function Home() {
+  noStore();
   const posts = await getPosts();
   const authed = await isAuthenticated();
 
