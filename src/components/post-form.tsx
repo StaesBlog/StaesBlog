@@ -10,6 +10,17 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Save, Trash2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { useFormStatus } from 'react-dom';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 function SubmitButton({ isEditing }: { isEditing: boolean }) {
   const { pending } = useFormStatus();
@@ -22,22 +33,35 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
 }
 
 function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slug: string) => Promise<void> }) {
-    const { pending } = useFormStatus();
-    return (
-        <Button
-            type="button"
-            variant="destructive"
-            disabled={pending}
-            onClick={async () => {
-                if (confirm('Are you sure you want to delete this post?')) {
-                    await deleteAction(slug);
-                }
-            }}
-        >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
+  const { pending } = useFormStatus();
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button type="button" variant="destructive" disabled={pending}>
+          <Trash2 className="mr-2 h-4 w-4" />
+          Delete
         </Button>
-    )
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            post and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={async () => await deleteAction(slug)}
+            disabled={pending}
+          >
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 type PostFormProps = {
