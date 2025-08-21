@@ -8,9 +8,9 @@ import { Post } from '@/lib/types';
 function PostCard({ post }: { post: Post }) {
   return (
     <Link href={`/posts/${post.slug}`} className="group block h-full">
-      <Card className="h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1.5 border-2 border-card hover:border-primary/30">
+      <Card className="h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1.5 border-2 border-card hover:border-accent">
         <CardHeader>
-          <CardTitle className="group-hover:text-primary transition-colors">{post.title}</CardTitle>
+          <CardTitle className="group-hover:text-accent transition-colors">{post.title}</CardTitle>
           <CardDescription>
             {new Date(post.publishedAt).toLocaleDateString('en-US', {
               year: 'numeric',
