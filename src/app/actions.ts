@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { Post } from '@/lib/types';
 import { notFound } from 'next/navigation';
 import { cookies } from 'next/headers';
+import { unstable_noStore as noStore } from 'next/cache';
 
 // Using a Map to store posts in memory, simulating a database.
 const posts = new Map<string, Post>();
@@ -66,6 +67,7 @@ const SESSION_COOKIE_NAME = 'session';
 const ADMIN_PASSWORD = 'admin'; 
 
 export async function isAuthenticated() {
+    noStore();
     return !!cookies().get(SESSION_COOKIE_NAME)?.value;
 }
 

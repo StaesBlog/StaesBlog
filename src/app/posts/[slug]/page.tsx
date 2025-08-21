@@ -4,8 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Pencil, Calendar, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
+  noStore();
   const post = await getPost(params.slug);
   const authed = await isAuthenticated();
 
