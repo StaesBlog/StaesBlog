@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { Post } from '@/lib/types';
 import { notFound } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 // Using a Map to store posts in memory, simulating a database.
 const posts = new Map<string, Post>();
@@ -56,6 +57,51 @@ const postSchema = z.object({
   content: z.string().min(10, { message: 'Content must be at least 10 characters long.' }),
 });
 
+const loginSchema = z.object({
+  password: z.string().min(1, 'Password is required.'),
+});
+
+const SESSION_COOKIE_NAME = 'session';
+// In a real app, this should be an environment variable.
+const ADMIN_PASSWORD = 'admin'; 
+
+export async function isAuthenticated() {
+    return !!cookies().get(SESSION_COOKIE_NAME)?.value;
+}
+
+export async function login(prevState: any, formData: FormData) {
+  const validatedFields = loginSchema.safeParse({
+    password: formData.get('password'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  
+  if (validatedFields.data.password !== ADMIN_PASSWORD) {
+    return {
+      errors: { password: ['Incorrect password.'] },
+    };
+  }
+
+  cookies().set(SESSION_COOKIE_NAME, 'true', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24 * 7, // One week
+    path: '/',
+  });
+  
+  redirect('/');
+}
+
+export async function logout() {
+    cookies().delete(SESSION_COOKIE_NAME);
+    redirect('/');
+}
+
+
 export async function getPosts(): Promise<Post[]> {
   return Array.from(posts.values()).sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 }
@@ -65,6 +111,8 @@ export async function getPost(slug: string): Promise<Post | undefined> {
 }
 
 export async function createPost(prevState: any, formData: FormData) {
+  if (!await isAuthenticated()) redirect('/login');
+
   const validatedFields = postSchema.safeParse({
     title: formData.get('title'),
     content: formData.get('content'),
@@ -100,6 +148,7 @@ export async function createPost(prevState: any, formData: FormData) {
 }
 
 export async function updatePost(slug: string, prevState: any, formData: FormData) {
+    if (!await isAuthenticated()) redirect('/login');
     const validatedFields = postSchema.safeParse({
         title: formData.get('title'),
         content: formData.get('content'),
@@ -145,6 +194,7 @@ export async function updatePost(slug: string, prevState: any, formData: FormDat
 }
 
 export async function deletePost(slug: string) {
+    if (!await isAuthenticated()) redirect('/login');
     if (posts.has(slug)) {
         posts.delete(slug);
         revalidatePath('/');

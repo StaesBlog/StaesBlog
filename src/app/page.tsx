@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getPosts } from '@/app/actions';
+import { getPosts, isAuthenticated } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { PlusCircle } from 'lucide-react';
@@ -29,29 +29,34 @@ function PostCard({ post }: { post: Post }) {
 
 export default async function Home() {
   const posts = await getPosts();
+  const authed = await isAuthenticated();
 
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex justify-between items-center gap-4">
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Latest Posts</h1>
-        <Button asChild>
-          <Link href="/new">
-            <PlusCircle className="mr-2 h-4 w-4" />
-            New Post
-          </Link>
-        </Button>
+        { authed && (
+          <Button asChild>
+            <Link href="/new">
+              <PlusCircle className="mr-2 h-4 w-4" />
+              New Post
+            </Link>
+          </Button>
+        )}
       </div>
 
       {posts.length === 0 ? (
         <div className="text-center py-20 px-4 border-2 border-dashed rounded-lg bg-card">
           <h2 className="text-xl font-medium">No posts yet</h2>
           <p className="text-muted-foreground mt-2 mb-4">Start by creating your first post.</p>
-           <Button asChild>
-              <Link href="/new">
-                <PlusCircle className="mr-2 h-4 w-4" />
-                Create a Post
-              </Link>
-            </Button>
+           { authed && (
+              <Button asChild>
+                <Link href="/new">
+                  <PlusCircle className="mr-2 h-4 w-4" />
+                  Create a Post
+                </Link>
+              </Button>
+           )}
         </div>
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

@@ -1,8 +1,33 @@
 import Link from 'next/link';
-import { BookText } from 'lucide-react';
+import { BookText, LogIn, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
+import { isAuthenticated, logout } from '@/app/actions';
 
-export function Header() {
+async function AuthButton() {
+  const authed = await isAuthenticated();
+
+  if (authed) {
+    return (
+      <form action={logout}>
+        <Button variant="ghost" type="submit">
+          <LogOut className="mr-2" />
+          Logout
+        </Button>
+      </form>
+    );
+  }
+
+  return (
+    <Button asChild variant="ghost">
+      <Link href="/login">
+        <LogIn className="mr-2" />
+        Login
+      </Link>
+    </Button>
+  );
+}
+
+export async function Header() {
   return (
     <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,6 +40,7 @@ export function Header() {
               StaesBlog
             </h1>
           </Link>
+          <AuthButton />
         </div>
       </div>
     </header>

@@ -1,8 +1,13 @@
-import { notFound } from 'next/navigation';
-import { getPost, updatePost, deletePost } from '@/app/actions';
+import { notFound, redirect } from 'next/navigation';
+import { getPost, updatePost, deletePost, isAuthenticated } from '@/app/actions';
 import { PostForm } from '@/components/post-form';
 
 export default async function EditPostPage({ params }: { params: { slug: string } }) {
+  const authed = await isAuthenticated();
+  if (!authed) {
+    redirect('/login');
+  }
+  
   const { slug } = params;
   const post = await getPost(slug);
 
