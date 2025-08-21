@@ -78,12 +78,14 @@ export async function login(prevState: any, formData: FormData) {
 
   if (!validatedFields.success) {
     return {
+      success: false,
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
   
   if (validatedFields.data.password !== ADMIN_PASSWORD) {
     return {
+      success: false,
       errors: { password: ['Incorrect password.'] },
     };
   }
@@ -96,7 +98,7 @@ export async function login(prevState: any, formData: FormData) {
   });
   
   revalidatePath('/');
-  redirect('/');
+  return { success: true, errors: {} };
 }
 
 export async function logout() {
