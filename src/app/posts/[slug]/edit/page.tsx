@@ -1,8 +1,10 @@
 import { notFound, redirect } from 'next/navigation';
 import { getPost, updatePost, deletePost, isAuthenticated } from '@/app/actions';
 import { PostForm } from '@/components/post-form';
+import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function EditPostPage({ params }: { params: { slug: string } }) {
+  noStore();
   const authed = await isAuthenticated();
   if (!authed) {
     redirect('/login');
