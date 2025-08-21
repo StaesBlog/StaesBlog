@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 export default async function NewPostPage() {
   const authed = await isAuthenticated();
   if (!authed) {
-    redirect('/login');
+    return redirect('/login');
   }
 
   return (
