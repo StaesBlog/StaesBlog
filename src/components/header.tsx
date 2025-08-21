@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { BookText, LogIn, LogOut } from 'lucide-react';
 import { Button } from './ui/button';
 import { isAuthenticated, logout } from '@/app/actions';
+import { unstable_noStore as noStore } from 'next/cache';
 
 async function AuthButton() {
   const authed = await isAuthenticated();
@@ -28,6 +29,7 @@ async function AuthButton() {
 }
 
 export async function Header() {
+  noStore();
   return (
     <header className="bg-card/80 backdrop-blur-sm border-b sticky top-0 z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">

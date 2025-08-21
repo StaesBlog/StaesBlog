@@ -98,7 +98,7 @@ export async function login(prevState: any, formData: FormData) {
   });
   
   revalidatePath('/');
-  return { success: true, errors: {} };
+  redirect('/');
 }
 
 export async function logout() {
