@@ -10,8 +10,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { unstable_noStore as noStore } from 'next/cache';
-
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -24,7 +22,6 @@ function SubmitButton() {
 }
 
 export default function NewPostPage() {
-  noStore();
   const [state, formAction] = useActionState(createPost, { errors: {} });
 
   return (

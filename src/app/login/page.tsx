@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState } from 'react-dom';
 import { useFormStatus } from 'react-dom';
 import { login } from '@/app/actions';
 import { Button } from '@/components/ui/button';
@@ -8,8 +8,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LogIn } from 'lucide-react';
-import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
 
 function SubmitButton() {
   const { pending } = useFormStatus();

@@ -103,6 +103,7 @@ export async function login(prevState: any, formData: FormData) {
 
 export async function logout() {
     cookies().delete(SESSION_COOKIE_NAME);
+    revalidatePath('/');
     redirect('/');
 }
 
@@ -118,7 +119,11 @@ export async function getPost(slug: string): Promise<Post | undefined> {
 }
 
 export async function createPost(prevState: any, formData: FormData) {
-  if (!await isAuthenticated()) redirect('/login');
+  noStore();
+  const authed = await isAuthenticated();
+  if (!authed) {
+    return redirect('/login');
+  }
 
   const validatedFields = postSchema.safeParse({
     title: formData.get('title'),
@@ -151,11 +156,16 @@ export async function createPost(prevState: any, formData: FormData) {
   posts.set(slug, newPost);
 
   revalidatePath('/');
+  revalidatePath('/posts');
   redirect(`/posts/${slug}`);
 }
 
 export async function updatePost(slug: string, prevState: any, formData: FormData) {
-    if (!await isAuthenticated()) redirect('/login');
+    noStore();
+    const authed = await isAuthenticated();
+    if (!authed) {
+        return redirect('/login');
+    }
     const validatedFields = postSchema.safeParse({
         title: formData.get('title'),
         content: formData.get('content'),
@@ -201,7 +211,11 @@ export async function updatePost(slug: string, prevState: any, formData: FormDat
 }
 
 export async function deletePost(slug: string) {
-    if (!await isAuthenticated()) redirect('/login');
+    noStore();
+    const authed = await isAuthenticated();
+    if (!authed) {
+        return redirect('/login');
+    }
     if (posts.has(slug)) {
         posts.delete(slug);
         revalidatePath('/');

@@ -5,7 +5,7 @@ import { getPost, updatePost, deletePost, isAuthenticated } from '@/app/actions'
 import { unstable_noStore as noStore } from 'next/cache';
 import { useEffect, useState } from 'react';
 import { Post } from '@/lib/types';
-import { useActionState, useFormStatus } from 'react';
+import { useActionState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,7 +36,10 @@ function SubmitButton() {
   );
 }
 
-function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slug: string) => Promise<void> }) {
+function DeleteButton({ slug }: { slug: string }) {
+  const deletePostWithSlug = async () => {
+    await deletePost(slug);
+  };
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -55,7 +58,7 @@ function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slu
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <form action={async () => await deleteAction(slug)} className="w-full sm:w-auto">
+          <form action={deletePostWithSlug} className="w-full sm:w-auto">
             <AlertDialogAction type="submit" className="w-full">
               Continue
             </AlertDialogAction>
@@ -68,13 +71,13 @@ function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slu
 
 
 export default function EditPostPage({ params }: { params: { slug: string } }) {
+  noStore();
   const { slug } = params;
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPost() {
-      noStore();
       const authed = await isAuthenticated();
       if (!authed) {
         redirect('/login');
@@ -154,7 +157,7 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
                   </Link>
               </Button>
               <div className="flex gap-2">
-                  <DeleteButton slug={post.slug} deleteAction={deletePost} />
+                  <DeleteButton slug={post.slug} />
                   <SubmitButton />
               </div>
           </CardFooter>
