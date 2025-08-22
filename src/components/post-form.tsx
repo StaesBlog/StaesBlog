@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,7 +9,6 @@ import { type Post } from '@/lib/types';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { Save, Trash2, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useFormStatus } from 'react-dom';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,17 +26,19 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
   return (
     <Button type="submit" disabled={pending}>
       <Save className="mr-2 h-4 w-4" />
-      {pending ? (isEditing ? 'Saving...' : 'Publishing...') : (isEditing ? 'Save Changes' : 'Publish Post')}
+      {pending ? (isEditing ? 'Saving...' : 'Publishing...') : (isEditing ? 'Publish Post' : 'Publish Post')}
     </Button>
   );
 }
 
 function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slug: string) => Promise<void> }) {
-  const { pending } = useFormStatus();
+  // This is a client component, but the form action is a server action.
+  // We can't use useFormStatus here directly on the delete form.
+  // A simple solution is to just let the page handle the pending state.
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button type="button" variant="destructive" disabled={pending}>
+        <Button type="button" variant="destructive">
           <Trash2 className="mr-2 h-4 w-4" />
           Delete
         </Button>
@@ -52,17 +53,17 @@ function DeleteButton({ slug, deleteAction }: { slug: string; deleteAction: (slu
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={async () => await deleteAction(slug)}
-            disabled={pending}
-          >
-            Continue
-          </AlertDialogAction>
+          <form action={async () => await deleteAction(slug)} className="w-full sm:w-auto">
+            <AlertDialogAction type="submit" className="w-full">
+              Continue
+            </AlertDialogAction>
+          </form>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
 }
+
 
 type PostFormProps = {
   action: (prevState: any, formData: FormData) => Promise<{ errors?: any }>;
@@ -130,10 +131,8 @@ export function PostForm({ action, deleteAction, initialData }: PostFormProps) {
                 </Link>
             </Button>
             <div className="flex gap-2">
-                {isEditing && deleteAction && (
-                    <form action={deleteAction.bind(null, initialData.slug)}>
-                       <DeleteButton slug={initialData.slug} deleteAction={deleteAction} />
-                    </form>
+                {isEditing && deleteAction && initialData && (
+                   <DeleteButton slug={initialData.slug} deleteAction={deleteAction} />
                 )}
                 <SubmitButton isEditing={isEditing} />
             </div>
