@@ -3,11 +3,11 @@ import './globals.css';
 import { Header } from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
-import { Inter, Source_Code_Pro, Fira_Code } from 'next/font/google';
+import { Noto_Serif, Fira_Code } from 'next/font/google';
 
-const inter = Inter({
+const notoSerif = Noto_Serif({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-noto-serif',
 });
 
 const firaCode = Fira_Code({
@@ -28,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full dark">
-      <body className={cn('font-body antialiased h-full flex flex-col', inter.variable, firaCode.variable)}>
+      <body className={cn('font-body antialiased h-full flex flex-col', notoSerif.variable, firaCode.variable)}>
         <Header />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {children}
