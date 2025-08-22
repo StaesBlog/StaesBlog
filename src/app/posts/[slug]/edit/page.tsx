@@ -101,7 +101,7 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <form action={formAction} className="space-y-4" encType="multipart/form-data">
+      <form action={formAction} className="space-y-4">
         <Card>
           <CardHeader>
             <CardTitle>Edit Post</CardTitle>
