@@ -10,7 +10,7 @@ async function AuthButton() {
   if (authed) {
     return (
       <form action={logout}>
-        <Button variant="ghost" type="submit">
+        <Button variant="outline" type="submit">
           <LogOut className="mr-2" />
           Logout
         </Button>
@@ -19,7 +19,7 @@ async function AuthButton() {
   }
 
   return (
-    <Button asChild variant="ghost">
+    <Button asChild>
       <Link href="/login">
         <LogIn className="mr-2" />
         Login
@@ -38,7 +38,7 @@ export async function Header() {
             <div className="p-2 rounded-full bg-primary text-primary-foreground group-hover:bg-primary/90 transition-colors">
               <BookText className="h-5 w-5" />
             </div>
-            <h1 className="text-xl font-bold font-headline text-primary group-hover:text-primary/90 transition-colors sm:text-2xl">
+            <h1 className="text-xl font-bold font-headline text-foreground group-hover:text-foreground/80 transition-colors sm:text-2xl">
               StaesBlog
             </h1>
           </Link>
