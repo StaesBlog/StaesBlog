@@ -1,12 +1,14 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { login } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LogIn } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -19,7 +21,7 @@ function SubmitButton() {
 }
 
 export default function LoginPage() {
-  const [state, formAction] = useFormState(login, { success: false, errors: {} });
+  const [state, formAction] = useActionState(login, { success: false, errors: {} });
 
   return (
     <div className="flex items-center justify-center min-h-[70vh]">

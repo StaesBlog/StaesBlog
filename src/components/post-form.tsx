@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -26,7 +26,7 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
   return (
     <Button type="submit" disabled={pending}>
       <Save className="mr-2 h-4 w-4" />
-      {pending ? (isEditing ? 'Saving...' : 'Publishing...') : (isEditing ? 'Publish Post' : 'Publish Post')}
+      {pending ? (isEditing ? 'Saving...' : 'Publishing...') : (isEditing ? 'Save Changes' : 'Publish Post')}
     </Button>
   );
 }
@@ -72,7 +72,7 @@ type PostFormProps = {
 };
 
 export function PostForm({ action, deleteAction, initialData }: PostFormProps) {
-  const [state, formAction] = useFormState(action, { errors: {} });
+  const [state, formAction] = useActionState(action, { errors: {} });
   const isEditing = !!initialData;
 
   return (
