@@ -9,7 +9,7 @@ import { unstable_noStore as noStore } from 'next/cache';
 function PostCard({ post }: { post: Post }) {
   return (
     <Link href={`/posts/${post.slug}`} className="group block h-full">
-      <Card className="h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1.5 border-2 border-card hover:border-accent">
+      <Card className="h-full flex flex-col transition-all duration-300 ease-in-out group-hover:shadow-xl group-hover:-translate-y-1.5 border-2 border-border hover:border-accent">
         <CardHeader>
           <CardTitle className="group-hover:text-accent transition-colors">{post.title}</CardTitle>
           <CardDescription>
