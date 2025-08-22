@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { getPosts, isAuthenticated } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { PlusCircle } from 'lucide-react';
+import { PlusCircle, FileText } from 'lucide-react';
 import { Post } from '@/lib/types';
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -21,7 +21,10 @@ function PostCard({ post }: { post: Post }) {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-grow">
-          <p className="line-clamp-3 text-sm">{post.content}</p>
+            <div className="flex items-center text-sm text-muted-foreground">
+                <FileText className="mr-2 h-4 w-4" />
+                <p className="line-clamp-1">{post.fileName}</p>
+            </div>
         </CardContent>
       </Card>
     </Link>

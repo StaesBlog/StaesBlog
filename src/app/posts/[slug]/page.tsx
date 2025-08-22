@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getPost, isAuthenticated } from '@/app/actions';
 import { Button } from '@/components/ui/button';
-import { Pencil, Calendar, ArrowLeft } from 'lucide-react';
+import { Pencil, Calendar, ArrowLeft, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -14,6 +14,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
   if (!post) {
     notFound();
   }
+  
+  const isPlaceholder = post.fileName === 'placeholder.txt';
+  const pdfDataUri = `data:application/pdf;base64,${post.content}`;
 
   return (
     <article className="max-w-3xl mx-auto space-y-8 animate-fade-in">
@@ -54,10 +57,31 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
       <Separator />
 
-      <div className="text-lg space-y-6 break-words leading-relaxed">
-        {post.content.split('\n').filter(p => p.trim() !== '').map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
+      <div className="space-y-6">
+        {isPlaceholder ? (
+            <div className="text-lg text-muted-foreground italic p-8 border-2 border-dashed rounded-lg text-center">
+                <p>This is a placeholder post.</p>
+                <p>Edit this post to upload a real PDF file.</p>
+            </div>
+        ) : (
+            <>
+                <div className="text-center">
+                    <Button asChild>
+                        <a href={pdfDataUri} download={post.fileName}>
+                            <Download className="mr-2" />
+                            Download {post.fileName}
+                        </a>
+                    </Button>
+                </div>
+                <div className="aspect-video bg-muted/50 rounded-lg overflow-hidden border">
+                    <iframe
+                        src={pdfDataUri}
+                        className="w-full h-full"
+                        title={`PDF preview for ${post.title}`}
+                    />
+                </div>
+            </>
+        )}
       </div>
     </article>
   );

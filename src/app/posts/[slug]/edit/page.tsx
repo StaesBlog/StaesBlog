@@ -9,9 +9,8 @@ import { useActionState, useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Save, Trash2, ArrowLeft } from 'lucide-react';
+import { Save, Trash2, ArrowLeft, FileText } from 'lucide-react';
 import Link from 'next/link';
 import {
   AlertDialog,
@@ -102,12 +101,12 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} className="space-y-4" encType="multipart/form-data">
         <Card>
           <CardHeader>
             <CardTitle>Edit Post</CardTitle>
             <CardDescription>
-              Update the details of your post.
+              Update the details of your post. You can optionally upload a new PDF to replace the old one.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -130,21 +129,22 @@ export default function EditPostPage({ params }: { params: { slug: string } }) {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-base">Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                defaultValue={post.content}
-                placeholder="Write your thoughts here..."
-                rows={18}
-                required
-                aria-invalid={!!state.errors?.content}
-                aria-describedby="content-error"
-                className="text-base leading-relaxed"
+              <Label htmlFor="pdf" className="text-base">Replace PDF (Optional)</Label>
+               <div className="flex items-center text-sm text-muted-foreground border rounded-md p-2 bg-muted/50">
+                  <FileText className="mr-2 h-4 w-4 flex-shrink-0" />
+                  <span className="truncate">Current file: {post.fileName}</span>
+              </div>
+              <Input
+                id="pdf"
+                name="pdf"
+                type="file"
+                accept="application/pdf"
+                aria-invalid={!!state.errors?.pdf}
+                aria-describedby="pdf-error"
               />
-              {state.errors?.content && (
-                <p id="content-error" className="text-sm font-medium text-destructive">
-                  {state.errors.content[0]}
+              {state.errors?.pdf && (
+                <p id="pdf-error" className="text-sm font-medium text-destructive">
+                  {state.errors.pdf[0]}
                 </p>
               )}
             </div>

@@ -6,17 +6,16 @@ import { createPost } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Save, ArrowLeft } from 'lucide-react';
+import { Upload, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
     <Button type="submit" disabled={pending}>
-      <Save className="mr-2 h-4 w-4" />
-      {pending ? 'Publishing...' : 'Publish Post'}
+      <Upload className="mr-2 h-4 w-4" />
+      {pending ? 'Uploading...' : 'Upload Post'}
     </Button>
   );
 }
@@ -26,12 +25,12 @@ export default function NewPostPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <form action={formAction} className="space-y-4">
+      <form action={formAction} className="space-y-4" encType="multipart/form-data">
         <Card>
           <CardHeader>
             <CardTitle>Create New Post</CardTitle>
             <CardDescription>
-              Fill in the details to create a new post.
+              Provide a title and upload a PDF file for your new post.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -53,20 +52,19 @@ export default function NewPostPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="content" className="text-base">Content</Label>
-              <Textarea
-                id="content"
-                name="content"
-                placeholder="Write your thoughts here..."
-                rows={18}
+              <Label htmlFor="pdf" className="text-base">PDF File</Label>
+              <Input
+                id="pdf"
+                name="pdf"
+                type="file"
+                accept="application/pdf"
                 required
-                aria-invalid={!!state.errors?.content}
-                aria-describedby="content-error"
-                className="text-base leading-relaxed"
+                aria-invalid={!!state.errors?.pdf}
+                aria-describedby="pdf-error"
               />
-              {state.errors?.content && (
-                <p id="content-error" className="text-sm font-medium text-destructive">
-                  {state.errors.content[0]}
+              {state.errors?.pdf && (
+                <p id="pdf-error" className="text-sm font-medium text-destructive">
+                  {state.errors.pdf[0]}
                 </p>
               )}
             </div>
