@@ -1,8 +1,8 @@
 'use client';
 
-import { useActionState, useFormStatus } from 'react';
-import { createPost, isAuthenticated } from '@/app/actions';
-import { redirect } from 'next/navigation';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
+import { createPost } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -10,7 +10,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Save, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { unstable_noStore as noStore } from 'next/cache';
+
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -23,6 +24,7 @@ function SubmitButton() {
 }
 
 export default function NewPostPage() {
+  noStore();
   const [state, formAction] = useActionState(createPost, { errors: {} });
 
   return (
