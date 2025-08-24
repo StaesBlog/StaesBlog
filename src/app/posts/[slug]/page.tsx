@@ -1,15 +1,12 @@
 import { notFound } from 'next/navigation';
-import { getPost, isAuthenticated } from '@/app/actions';
+import { getPost, getPosts } from '@/lib/posts';
 import { Button } from '@/components/ui/button';
-import { Pencil, Calendar, ArrowLeft, Download } from 'lucide-react';
+import { Calendar, ArrowLeft, Download } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { unstable_noStore as noStore } from 'next/cache';
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
-  noStore();
   const post = await getPost(params.slug);
-  const authed = await isAuthenticated();
 
   if (!post) {
     notFound();
@@ -28,14 +25,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
                     All Posts
                 </Link>
             </Button>
-            { authed && (
-              <Button variant="outline" size="sm" asChild>
-                  <Link href={`/posts/${post.slug}/edit`}>
-                      <Pencil className="mr-2 h-4 w-4" />
-                      Edit
-                  </Link>
-              </Button>
-            )}
         </div>
 
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight font-headline text-primary">
@@ -85,4 +74,9 @@ export default async function PostPage({ params }: { params: { slug: string } })
       </div>
     </article>
   );
+}
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({ slug: post.slug }));
 }
