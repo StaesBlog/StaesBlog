@@ -23,6 +23,9 @@ jobs:
         with:
           node-version: 20
           cache: npm
+      - name: Set up npm registry auth
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - run: npm cache clean --force
       - run: npm ci
       - run: npm run export
         env:
