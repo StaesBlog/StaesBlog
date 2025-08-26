@@ -1,10 +1,15 @@
+import fs from 'fs';
+import path from 'path';
 import { Post } from '@/lib/types';
+
+// Directory where markdown files are stored
+const postsDir = path.join(process.cwd(), 'src', 'content');
 
 // Using a Map to store posts in memory, simulating a database.
 const posts = new Map<string, Post>();
 
 // Seed the store with some initial blog posts for demonstration.
-const initialPosts: Omit<Post, 'content' | 'fileName'>[] = [
+const initialPosts: Omit<Post, 'content'>[] = [
   {
     id: '1',
     title: 'The Art of Minimalist Design',
@@ -26,10 +31,11 @@ const initialPosts: Omit<Post, 'content' | 'fileName'>[] = [
 ];
 
 initialPosts.forEach(post => {
+  const filePath = path.join(postsDir, `${post.slug}.md`);
+  const content = fs.readFileSync(filePath, 'utf8');
   const fullPost: Post = {
     ...post,
-    content: `This is placeholder content for the post titled "${post.title}". In the real app, this would be a PDF.`,
-    fileName: 'placeholder.txt',
+    content,
   };
   posts.set(post.slug, fullPost);
 });

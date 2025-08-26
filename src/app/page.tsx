@@ -21,7 +21,7 @@ function PostCard({ post }: { post: Post }) {
         <CardContent className="flex-grow">
             <div className="flex items-center text-sm text-muted-foreground">
                 <FileText className="mr-2 h-4 w-4" />
-                <p className="line-clamp-1">{post.fileName}</p>
+                <p className="line-clamp-1">{post.content.split('\n')[0]}</p>
             </div>
         </CardContent>
       </Card>
