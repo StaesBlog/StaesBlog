@@ -11,3 +11,7 @@ This project is configured for static export so it can be hosted on GitHub Pages
 - Run `npm run export` to generate the site in the `out` directory.
 - Pushing to `main` triggers the workflow in `.github/workflows/gh-pages.yml` which builds and deploys the site.
 - Assets are served from a base path using the `NEXT_PUBLIC_BASE_PATH` environment variable.
+
+Ensure that only this workflow exists. A duplicate workflow file such as
+`.github/workflows/nextjs.yml` can cause the deployment to cancel itself
+and prevent the site from publishing.
