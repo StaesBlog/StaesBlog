@@ -27,7 +27,7 @@ jobs:
       - run: npm run export
         env:
           NEXT_PUBLIC_BASE_PATH: "/${{ github.event.repository.name }}"
-      - uses: actions/upload-pages-artifact@v2
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: out
   deploy:
@@ -38,4 +38,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4
