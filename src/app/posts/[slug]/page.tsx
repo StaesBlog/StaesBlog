@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
 import { getPost, getPosts } from '@/lib/posts';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowLeft, Download } from 'lucide-react';
+import { Calendar, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { marked } from 'marked';
 
 export default async function PostPage({ params }: { params: { slug: string } }) {
   const post = await getPost(params.slug);
@@ -12,9 +13,6 @@ export default async function PostPage({ params }: { params: { slug: string } })
     notFound();
   }
   
-  const isPlaceholder = post.fileName === 'placeholder.txt';
-  const pdfDataUri = `data:application/pdf;base64,${post.content}`;
-
   return (
     <article className="max-w-3xl mx-auto space-y-8 animate-fade-in">
       <div className="space-y-4">
@@ -46,32 +44,10 @@ export default async function PostPage({ params }: { params: { slug: string } })
 
       <Separator />
 
-      <div className="space-y-6">
-        {isPlaceholder ? (
-            <div className="text-lg text-muted-foreground italic p-8 border-2 border-dashed rounded-lg text-center">
-                <p>This is a placeholder post.</p>
-                <p>Edit this post to upload a real PDF file.</p>
-            </div>
-        ) : (
-            <>
-                <div className="text-center">
-                    <Button asChild>
-                        <a href={pdfDataUri} download={post.fileName}>
-                            <Download className="mr-2" />
-                            Download {post.fileName}
-                        </a>
-                    </Button>
-                </div>
-                <div className="aspect-video bg-muted/50 rounded-lg overflow-hidden border">
-                    <iframe
-                        src={pdfDataUri}
-                        className="w-full h-full"
-                        title={`PDF preview for ${post.title}`}
-                    />
-                </div>
-            </>
-        )}
-      </div>
+      <div
+        className="prose dark:prose-invert"
+        dangerouslySetInnerHTML={{ __html: marked.parse(post.content) }}
+      />
     </article>
   );
 }
