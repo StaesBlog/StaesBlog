@@ -4,11 +4,16 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
-import { Noto_Serif, Fira_Code } from 'next/font/google';
+import { Inter, Playfair_Display, Fira_Code } from 'next/font/google';
 
-const notoSerif = Noto_Serif({
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-noto-serif',
+  variable: '--font-inter',
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
 });
 
 const firaCode = Fira_Code({
@@ -29,7 +34,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full dark">
-      <body className={cn('font-body antialiased h-full flex flex-col', notoSerif.variable, firaCode.variable)}>
+      <body
+        className={cn(
+          'font-body antialiased min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted',
+          inter.variable,
+          playfair.variable,
+          firaCode.variable,
+        )}
+      >
         <Header />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {children}
