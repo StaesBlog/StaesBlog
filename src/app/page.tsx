@@ -34,8 +34,15 @@ export default async function Home() {
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <section className="text-center py-10 md:py-16 bg-gradient-to-b from-background to-muted rounded-lg">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">Welcome to StaesBlog</h1>
+        <p className="text-muted-foreground max-w-2xl mx-auto">
+          Exploring minimalist thoughts with modern web tech.
+        </p>
+      </section>
+
       <div className="flex justify-between items-center gap-4">
-        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Latest Posts</h1>
+        <h2 className="text-3xl md:text-4xl font-bold font-headline text-primary">Latest Posts</h2>
       </div>
 
       {posts.length === 0 ? (
