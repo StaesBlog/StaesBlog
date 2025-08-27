@@ -36,14 +36,14 @@ export default function RootLayout({
     <html lang="en" className="h-full dark">
       <body
         className={cn(
-          'font-body antialiased min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted text-foreground transition-colors',
+          'font-body antialiased min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted',
           inter.variable,
           playfair.variable,
           firaCode.variable,
         )}
       >
         <Header />
-        <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 animate-fade-in">
+        <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {children}
         </main>
         <Footer />
