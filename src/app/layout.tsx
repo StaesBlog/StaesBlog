@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { Inter, Playfair_Display, Fira_Code } from 'next/font/google';
 
@@ -36,7 +35,7 @@ export default function RootLayout({
     <html lang="en" className="h-full dark">
       <body
         className={cn(
-          'font-body antialiased min-h-screen flex flex-col bg-gradient-to-br from-background via-background to-muted',
+          'font-body antialiased min-h-screen flex flex-col bg-background',
           inter.variable,
           playfair.variable,
           firaCode.variable,
@@ -47,7 +46,6 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
-        <Toaster />
       </body>
     </html>
   );
