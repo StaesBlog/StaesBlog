@@ -14,7 +14,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
   }
   
   return (
-    <article className="mx-auto max-w-3xl space-y-8 rounded-2xl bg-card/60 p-8 backdrop-blur-sm animate-fade-in">
+    <article className="mx-auto max-w-3xl space-y-8 rounded-2xl bg-card p-8">
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
           <Button variant="ghost" size="sm" asChild className="-ml-4">
@@ -28,7 +28,7 @@ export default async function PostPage({ params }: { params: { slug: string } })
           </Button>
         </div>
 
-        <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-extrabold tracking-tight text-transparent md:text-5xl font-headline">
+        <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl font-headline text-primary">
           {post.title}
         </h1>
 
