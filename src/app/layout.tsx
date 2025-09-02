@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { cn } from '@/lib/utils';
 import { Inter, Playfair_Display, Fira_Code } from 'next/font/google';
@@ -41,7 +40,6 @@ export default function RootLayout({
           firaCode.variable,
         )}
       >
-        <Header />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
           {children}
         </main>
