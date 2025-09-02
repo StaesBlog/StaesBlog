@@ -1,29 +1,44 @@
 import { getPosts } from '@/lib/posts';
-import { Hero } from '@/components/hero';
-import { PostCard } from '@/components/post-card';
 
 export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <div className="space-y-12">
-      <Hero />
-
-      <div id="latest-posts" className="flex items-center justify-between gap-4">
-        <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">Latest Posts</h2>
+    <div
+      style={{
+        backgroundColor: '#000',
+        color: '#0f0',
+        fontFamily: 'Courier New, monospace',
+        minHeight: '100vh',
+        padding: '20px',
+      }}
+    >
+      <div style={{ textAlign: 'center' }}>
+        <h1>StaesBlog</h1>
+        <p>Welcome to the retro zone.</p>
+        <hr />
       </div>
-
       {posts.length === 0 ? (
-        <div className="text-center py-20 px-4 border-2 border-dashed rounded-lg bg-card">
-          <h2 className="text-xl font-medium">No posts yet</h2>
-          <p className="mt-2 mb-4 text-muted-foreground">Start by creating your first post.</p>
+        <div style={{ textAlign: 'center', marginTop: '40px' }}>
+          <p>No posts yet</p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
-        </div>
+        <table width="100%" style={{ marginTop: '40px' }}>
+          <tbody>
+            {posts.map((post) => (
+              <tr key={post.slug}>
+                <td>
+                  <a href={`/posts/${post.slug}`} style={{ color: '#ff0' }}>
+                    {post.title}
+                  </a>
+                </td>
+                <td align="right">
+                  <span style={{ color: '#888' }}>{post.publishedAt.toDateString()}</span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
     </div>
   );
