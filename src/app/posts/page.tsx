@@ -6,10 +6,10 @@ export default async function PostsPage() {
   const posts = await getPosts();
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12 max-w-5xl mx-auto px-4">
       <Hero />
 
-      <div id="latest-posts" className="flex items-center justify-between gap-4">
+      <div id="latest-posts" className="mb-6 flex items-center justify-between gap-4">
         <h2 className="font-headline text-3xl font-bold text-primary md:text-4xl">Latest Posts</h2>
       </div>
 
@@ -19,7 +19,7 @@ export default async function PostsPage() {
           <p className="mt-2 mb-4 text-muted-foreground">Start by creating your first post.</p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}
