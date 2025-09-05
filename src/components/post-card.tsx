@@ -1,14 +1,18 @@
 import Link from 'next/link';
-import { FileText } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Post } from '@/lib/types';
 
 export function PostCard({ post }: { post: Post }) {
+  const snippet = post.content
+    .split('\n')
+    .find((line) => line.trim() && !line.trim().startsWith('#'))
+    ?.trim();
+
   return (
     <Link href={`/posts/${post.slug}`} className="block h-full">
-      <Card className="h-full flex flex-col">
+      <Card className="h-full flex flex-col transition-shadow hover:shadow-md">
         <CardHeader>
-          <CardTitle>{post.title}</CardTitle>
+          <CardTitle className="text-xl font-semibold">{post.title}</CardTitle>
           <CardDescription>
             {new Date(post.publishedAt).toLocaleDateString('en-US', {
               year: 'numeric',
@@ -17,12 +21,11 @@ export function PostCard({ post }: { post: Post }) {
             })}
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex-grow">
-          <div className="flex items-center text-sm text-muted-foreground">
-            <FileText className="mr-2 h-4 w-4" />
-            <p className="line-clamp-1">{post.content.split('\n')[0]}</p>
-          </div>
-        </CardContent>
+        {snippet && (
+          <CardContent className="flex-grow">
+            <p className="text-sm text-muted-foreground line-clamp-2">{snippet}</p>
+          </CardContent>
+        )}
       </Card>
     </Link>
   );
