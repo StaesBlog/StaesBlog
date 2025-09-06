@@ -38,7 +38,7 @@ export default function UploadPage() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           type="file"
-          accept=".md"
+          accept=".md,.markdown,text/markdown"
           onChange={(e) => setFile(e.target.files?.[0] ?? null)}
         />
         <Button type="submit" className="w-full">

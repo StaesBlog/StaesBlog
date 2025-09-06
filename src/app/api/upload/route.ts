@@ -11,7 +11,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
   }
 
-  if (!file.name.endsWith('.md')) {
+  const ext = path.extname(file.name).toLowerCase();
+  if (!['.md', '.markdown'].includes(ext)) {
     return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
   }
 
