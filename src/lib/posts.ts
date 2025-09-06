@@ -40,6 +40,17 @@ initialPosts.forEach(post => {
   posts.set(post.slug, fullPost);
 });
 
+export function addPost(slug: string, title: string, content: string) {
+  const newPost: Post = {
+    id: Date.now().toString(),
+    title,
+    slug,
+    publishedAt: new Date(),
+    content,
+  };
+  posts.set(slug, newPost);
+}
+
 export function getPosts(): Post[] {
   return Array.from(posts.values()).sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 }
